@@ -3,8 +3,13 @@ import "./MnistOcr.scss";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Canvas } from "@/components";
 import { useRef, useState } from "react";
-import { dataURLtoFile } from "@/utils";
-import { predictNumber } from "@/services";
+import {
+    canvasToTensor,
+    dataURLtoFile,
+    resizeCanvas,
+    tensorToDataURL,
+} from "@/utils";
+import { predictNumber, runModel } from "@/services";
 
 export function MnistOcr() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -14,26 +19,13 @@ export function MnistOcr() {
         const canvas = canvasRef.current;
 
         if (!canvas) return;
-        const image = canvas.toDataURL();
+        const dataURL = canvas.toDataURL();
 
-        
-        predictNumber(image)
+        const resizedCanvas = await resizeCanvas(canvas, 28, 28);
+        const tensor = canvasToTensor(resizedCanvas);
+        const prediction = await runModel(tensor);
 
-        
-        // const image_file = dataURLtoFile(image, "image.png");
-        // let body = new FormData();
-        // body.append("image", image_file);
-        // const prediction = await fetch("http://127.0.0.1:8000/api/ml/mnist/", {
-        //     method: "POST",
-        //     headers: {
-        //         Accept: "application/json",
-        //     },
-        //     body,
-        // })
-        //     .then((data) => data.json())
-        //     .then((response) => response.data.prediction);
-
-        // setPrediction(prediction);
+        setPrediction(prediction.toString());
     }
 
     function handleReset() {
