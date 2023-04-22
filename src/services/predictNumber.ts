@@ -19,7 +19,7 @@ export async function predictNumber(image: string) {
 }
 
 export async function runModel(input: TypedTensor<"float32">) {
-    const session = await InferenceSession.create("/react-mnist-ocr/mnist02.onnx", {
+    const session = await InferenceSession.create("/react-mnist-ocr/mnist05.onnx", {
         executionProviders: ["webgl"],
         graphOptimizationLevel: "all",
     });

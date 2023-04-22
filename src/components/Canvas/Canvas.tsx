@@ -30,7 +30,7 @@ export const Canvas = forwardRef<HTMLCanvasElement>((props, ref) => {
 
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 5;
         ctx.lineJoin = "round";
         ctx.lineCap = "round";
     }, []);
