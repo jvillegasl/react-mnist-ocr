@@ -38,9 +38,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build
-        run: |
-          npm run build
-          echo "The env var is: ${{ vars.VITE_BACKEND_URL }}"
+        run: npm run build
         env:
           VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
       - name: Setup Pages
