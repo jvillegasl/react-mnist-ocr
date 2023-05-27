@@ -40,9 +40,9 @@ jobs:
       - name: Build
         run: |
           npm run build
-          echo "The env var is: ${{ env.VITE_BACKEND_URL }}"
+          echo "The env var is: ${{ vars.VITE_BACKEND_URL }}"
         env:
-          VITE_BACKEND_URL: ${{ env.VITE_BACKEND_URL }}
+          VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
