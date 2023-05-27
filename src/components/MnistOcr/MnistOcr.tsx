@@ -5,7 +5,6 @@ import { dataURLtoFile } from "@/utils";
 import { predictNumber } from "@/services";
 
 export function MnistOcr() {
-    console.log(import.meta.env.VITE_BACKEND_URL);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [prediction, setPrediction] = useState<string>("???");
 
