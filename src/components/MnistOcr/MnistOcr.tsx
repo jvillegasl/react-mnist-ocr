@@ -1,6 +1,7 @@
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { Canvas } from "@/components";
 import { useRef, useState } from "react";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+
+import { Canvas } from "@/components";
 import { dataURLtoFile } from "@/utils";
 import { predictNumber } from "@/services";
 
@@ -15,7 +16,10 @@ export function MnistOcr() {
         const dataURL = canvas.toDataURL();
         const imageFile = dataURLtoFile(dataURL, "image-test.png");
 
-        predictNumber(imageFile).then((t) => setPrediction(t.toString()));
+        setPrediction("Loading...");
+        predictNumber(imageFile)
+            .then((t) => setPrediction(t.toString()))
+            .catch(() => setPrediction("???"));
     }
 
     function handleReset() {

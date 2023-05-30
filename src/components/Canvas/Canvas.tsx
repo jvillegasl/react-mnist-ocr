@@ -7,7 +7,11 @@ import {
     MouseEvent,
     useMemo,
     forwardRef,
+    TouchEvent,
 } from "react";
+import { getCoordinates } from "@/utils";
+
+type PointerEvent<T extends HTMLElement> = MouseEvent<T> | TouchEvent<T>;
 
 export const Canvas = forwardRef<HTMLCanvasElement>((props, ref) => {
     const defaultRef = useRef<HTMLCanvasElement>(null);
@@ -35,7 +39,7 @@ export const Canvas = forwardRef<HTMLCanvasElement>((props, ref) => {
         ctx.lineCap = "round";
     }, []);
 
-    function startDrawing(event: MouseEvent<HTMLCanvasElement>) {
+    function startDrawing(event: PointerEvent<HTMLCanvasElement>) {
         const canvas = canvasRef.current;
 
         if (!canvas) return;
@@ -44,14 +48,13 @@ export const Canvas = forwardRef<HTMLCanvasElement>((props, ref) => {
 
         if (!ctx) return;
 
-        const { offsetX, offsetY } = event.nativeEvent;
-
+        const { offsetX, offsetY } = getCoordinates(event);
         ctx.beginPath();
         ctx.moveTo(offsetX, offsetY);
         setIsDrawing(true);
     }
 
-    function finishDrawing(event: MouseEvent<HTMLCanvasElement>) {
+    function finishDrawing(event: PointerEvent<HTMLCanvasElement>) {
         if (!isDrawing) return;
 
         const canvas = canvasRef.current;
@@ -66,7 +69,7 @@ export const Canvas = forwardRef<HTMLCanvasElement>((props, ref) => {
         setIsDrawing(false);
     }
 
-    function draw(event: MouseEvent<HTMLCanvasElement>) {
+    function draw(event: PointerEvent<HTMLCanvasElement>) {
         if (!isDrawing) return;
 
         const canvas = canvasRef.current;
@@ -77,7 +80,7 @@ export const Canvas = forwardRef<HTMLCanvasElement>((props, ref) => {
 
         if (!ctx) return;
 
-        const { offsetX, offsetY } = event.nativeEvent;
+        const { offsetX, offsetY } = getCoordinates(event);
 
         ctx.lineTo(offsetX, offsetY);
         ctx.stroke();
@@ -92,6 +95,9 @@ export const Canvas = forwardRef<HTMLCanvasElement>((props, ref) => {
             onMouseDown={startDrawing}
             onMouseUp={finishDrawing}
             onMouseMove={draw}
+            onTouchStart={startDrawing}
+            onTouchMove={draw}
+            onTouchEnd={finishDrawing}
         />
     );
 });
